@@ -1,5 +1,5 @@
 {
-  "name": "videojs-contrib-dash",
+  "name": "@s3bubble/videojs-contrib-dash-with-quality-levels",
   "description": "A Video.js source-handler providing MPEG-DASH playback.",
   "main": "dist/videojs-dash.cjs.js",
   "repository": {

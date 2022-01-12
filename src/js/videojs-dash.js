@@ -1,6 +1,7 @@
 import window from 'global/window';
 import videojs from 'video.js';
 import dashjs from 'dashjs';
+import setupQualityLevels from './setup-quality-levels';
 import setupAudioTracks from './setup-audio-tracks';
 import setupTextTracks from './setup-text-tracks';
 import document from 'global/document';
@@ -109,7 +110,7 @@ class Html5DashJS {
         (event.event.id === 'multiplexedrep')
       )) {
         // These errors have useful error messages, so we forward it on
-        this.player.error({code: 4, message: event.event.message});
+        this.player.error({ code: 4, message: event.event.message });
 
       } else if (event.error === 'mediasource') {
         // This error happens when dash.js fails to allocate a SourceBuffer
@@ -119,25 +120,25 @@ class Html5DashJS {
         // If it's a `MediaError`, dash.js inspects the error object for
         // additional information to append to the error type.
         if (event.event.match('MEDIA_ERR_ABORTED')) {
-          this.player.error({code: 1, message: event.event});
+          this.player.error({ code: 1, message: event.event });
         } else if (event.event.match('MEDIA_ERR_NETWORK')) {
-          this.player.error({code: 2, message: event.event});
+          this.player.error({ code: 2, message: event.event });
         } else if (event.event.match('MEDIA_ERR_DECODE')) {
-          this.player.error({code: 3, message: event.event});
+          this.player.error({ code: 3, message: event.event });
         } else if (event.event.match('MEDIA_ERR_SRC_NOT_SUPPORTED')) {
-          this.player.error({code: 4, message: event.event});
+          this.player.error({ code: 4, message: event.event });
         } else if (event.event.match('MEDIA_ERR_ENCRYPTED')) {
-          this.player.error({code: 5, message: event.event});
+          this.player.error({ code: 5, message: event.event });
         } else if (event.event.match('UNKNOWN')) {
           // We shouldn't ever end up here, since this would mean a
           // `MediaError` thrown by the video element that doesn't comply
           // with the W3C spec. But, since we should handle the error,
           // throwing a MEDIA_ERR_SRC_NOT_SUPPORTED is probably the
           // most reasonable thing to do.
-          this.player.error({code: 4, message: event.event});
+          this.player.error({ code: 4, message: event.event });
         } else {
           // Buffer allocation error
-          this.player.error({code: 4, message: event.event});
+          this.player.error({ code: 4, message: event.event });
         }
 
       } else if (event.error === 'capability' && event.event === 'encryptedmedia') {
@@ -247,6 +248,9 @@ class Html5DashJS {
 
     // Dash.js autoplays by default, video.js will handle autoplay
     this.mediaPlayer_.setAutoPlay(false);
+
+    // Setup quality level
+    setupQualityLevels.call(null, this.player, tech);
 
     // Setup audio tracks
     setupAudioTracks.call(null, this.player, tech);
