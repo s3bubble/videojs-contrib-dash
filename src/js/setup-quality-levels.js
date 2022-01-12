@@ -4,22 +4,24 @@ import videojs from 'video.js';
 function handleQualityLevels(player, tech) {
 
   const mediaPlayer = player.dash.mediaPlayer;
+
   player.dashQualityLevels = mediaPlayer.getBitrateInfoListFor('video');
   player.trigger('dashQualityLevels');
 
-  player.on("dashQualityLevelsSelected", function(e) {
-    let select = e.target.player.dashQualityLevelsSelected;
+  player.on('dashQualityLevelsSelected', function(e) {
+    const select = e.target.player.dashQualityLevelsSelected;
+
     console.log('levels', select);
 
-    let cfg = {
-      'streaming': {
-        'abr': {
-          'autoSwitchBitrate': {}
+    const cfg = {
+      streaming: {
+        abr: {
+          autoSwitchBitrate: {}
         }
       }
     };
 
-    cfg.streaming.abr.autoSwitchBitrate['video'] = false;
+    cfg.streaming.abr.autoSwitchBitrate.video = false;
     mediaPlayer.updateSettings(cfg);
     mediaPlayer.setQualityFor('video', select, true);
 
