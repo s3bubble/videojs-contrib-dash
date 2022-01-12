@@ -11,8 +11,6 @@ function handleQualityLevels(player, tech) {
   player.on('dashQualityLevelsSelected', function(e) {
     const select = e.target.player.dashQualityLevelsSelected;
 
-    console.log('levels', select);
-
     const cfg = {
       streaming: {
         abr: {
@@ -24,6 +22,21 @@ function handleQualityLevels(player, tech) {
     cfg.streaming.abr.autoSwitchBitrate.video = false;
     mediaPlayer.updateSettings(cfg);
     mediaPlayer.setQualityFor('video', select, true);
+
+  });
+
+  player.on('dashQualityLevelsSelectAuto', function(e) {
+
+    const cfg = {
+      streaming: {
+        abr: {
+          autoSwitchBitrate: {}
+        }
+      }
+    };
+
+    cfg.streaming.abr.autoSwitchBitrate.video = true;
+    mediaPlayer.updateSettings(cfg);
 
   });
 
